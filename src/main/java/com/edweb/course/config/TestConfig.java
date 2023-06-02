@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import com.edweb.course.entities.User;
 import com.edweb.course.repositories.UserRepository;
 
+// Camada auxiliar
 @Configuration // Define que a classe é de configuração
 @Profile("test") // aponta para o perfil de teste (definido em application.properties)
 public class TestConfig implements CommandLineRunner { // seed
