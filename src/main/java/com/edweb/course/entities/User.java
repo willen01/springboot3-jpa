@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +27,11 @@ public class User implements Serializable {
 
     // Em list se aplica somente o getter
     @OneToMany(mappedBy = "client") // Relacionamento um para muitos. Do outro lado (class order) o relacionamento
-                                    // está mapeado pelo atributo client
+                                    // está mapeado pelo atributo client. Nesse tipo de relacionamento o jpa não
+                                    // carregado os objetos muitos associados ao objeto um, a não ser que isso seja
+                                    // definido o JsonIgnore - lazy load
+
+    @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 
     public User() {

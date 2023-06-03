@@ -3,6 +3,8 @@ package com.edweb.course.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +20,20 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT") // Garante
+                                                                                                         // entrega da
+                                                                                                         // data com o
+    // padrão ISO8601
     private Instant moment;
 
-    @ManyToOne // relacionamento muitos para um
+    // @JsonIgnore // Corrige erro de associação de mão dupla (order chama user,
+    // user chama
+    // order...). Quando for chamado um usuário, ele chama orders e termina.
+    // JsonIgnore ignora a chamada para Usuários de volta.
+    @ManyToOne // relacionamento muitos para um. Para esse tipo de associação, ao se buscar um
+               // objeto do muitos, o jpa pega atomaticamente os objetos associados a ele do
+               // lado do um - lazy loading
     @JoinColumn(name = "client_id") // nome da chave estrangeira
     private User client;
 
