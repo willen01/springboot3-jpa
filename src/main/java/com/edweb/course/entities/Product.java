@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.ManyToAny;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -25,7 +28,18 @@ public class Product implements Serializable {
 
     // Set não aceita elementos repetidos - previne que o produto seja incluido na
     // categoria mais de uma vez
-    @Transient
+    @ManyToAny
+    @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id")) // Chave
+                                                                                                                                                     // estrangeira
+                                                                                                                                                     // que
+                                                                                                                                                     // associa
+                                                                                                                                                     // tabela
+                                                                                                                                                     // de
+                                                                                                                                                     // produtos
+                                                                                                                                                     // com
+                                                                                                                                                     // tabela
+                                                                                                                                                     // de
+                                                                                                                                                     // categoria
     private Set<Category> categories = new HashSet<>();
 
     public Product() {
