@@ -3,6 +3,7 @@ package com.edweb.course.entities;
 import java.io.Serializable;
 
 import com.edweb.course.entities.pk.OrderItemPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -11,23 +12,27 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
-
+    private static final long serialVersionUID = 1L;
+    // Ao criar clase auxiliar que possui como atributo um id composto, é necessário
+    // criar uma instância
     @EmbeddedId
-    private OrderItemPk id;
+    private OrderItemPk id = new OrderItemPk();
 
     private Integer quantity;
-    private double price;
+    private Double price;
 
     public OrderItem() {
     }
 
-    public OrderItem(Order order, Product product, Integer quantity, double price) {
-        id.setOrder(order);
+    public OrderItem(Order order, Product product, Integer quantity, Double price) {
+        super();
         id.setProduct(product);
+        id.setOrder(order);
         this.quantity = quantity;
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
     }
@@ -36,7 +41,7 @@ public class OrderItem implements Serializable {
         id.setOrder(order);
     }
 
-    public Product geProduct() {
+    public Product getProduct() {
         return id.getProduct();
     }
 

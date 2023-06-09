@@ -26,12 +26,13 @@ public class User implements Serializable {
     private String password;
 
     // Em list se aplica somente o getter
-    @OneToMany(mappedBy = "client") // Relacionamento um para muitos. Do outro lado (class order) o relacionamento
-                                    // está mapeado pelo atributo client. Nesse tipo de relacionamento o jpa não
-                                    // carregado os objetos muitos associados ao objeto um, a não ser que isso seja
-                                    // definido o JsonIgnore - lazy load
-
+    // Relacionamento um para muitos. Do outro lado (class order) o relacionamento
+    // está mapeado pelo atributo client. Nesse tipo de relacionamento o jpa não
+    // carregado os objetos muitos associados ao objeto um, a não ser que isso seja
+    // definido o JsonIgnore - lazy load
     @JsonIgnore
+    @OneToMany(mappedBy = "client")
+
     private List<Order> orders = new ArrayList<>();
 
     public User() {

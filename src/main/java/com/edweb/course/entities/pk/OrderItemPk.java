@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 @Embeddable
 public class OrderItemPk implements Serializable {
 
+    // Aponta para classe de produtos e pedidos
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -43,7 +44,7 @@ public class OrderItemPk implements Serializable {
         result = prime * result + ((order == null) ? 0 : order.hashCode());
         result = prime * result + ((product == null) ? 0 : product.hashCode());
         return result;
-    } // comparação por produto de pedido
+    } // comparação por produto e pedido
 
     @Override
     public boolean equals(Object obj) {
@@ -65,6 +66,6 @@ public class OrderItemPk implements Serializable {
         } else if (!product.equals(other.product))
             return false;
         return true;
-    } // comparação por produto de pedido
+    } // comparação por produto e pedido
 
 }

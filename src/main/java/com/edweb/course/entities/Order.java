@@ -2,6 +2,8 @@ package com.edweb.course.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.edweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,19 +14,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT") // Garante
-                                                                                                         // entrega da
-                                                                                                         // data com o
     // padrão ISO8601
     private Instant moment;
     private Integer orderStatus;
@@ -33,16 +34,21 @@ public class Order implements Serializable {
     // user chama
     // order...). Quando for chamado um usuário, ele chama orders e termina.
     // JsonIgnore ignora a chamada para Usuários de volta.
-    @ManyToOne // relacionamento muitos para um. Para esse tipo de associação, ao se buscar um
-               // objeto do muitos, o jpa pega atomaticamente os objetos associados a ele do
-               // lado do um - lazy loading
+    // relacionamento muitos para um. Para esse tipo de associação, ao se busca
+    // objeto do muitos, o jpa pega atomaticamente os objetos associados a ele do
+    // lado do um - lazy loading
+    @ManyToOne
     @JoinColumn(name = "client_id") // nome da chave estrangeira
     private User client;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
     }
 
     public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
+        super();
         this.id = id;
         this.moment = moment;
         this.client = client;
@@ -81,6 +87,10 @@ public class Order implements Serializable {
         if (orderStatus != null) {
             this.orderStatus = orderStatus.getCode();
         }
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
     @Override
