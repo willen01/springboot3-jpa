@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.edweb.course.entities.enums.OrderStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,7 +40,7 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id") // nome da chave estrangeira
     private User client;
 
-    @OneToMany(mappedBy = "id.order")
+    @OneToMany(mappedBy = "id.order") // mapeia o id do OrderItem e o atributo id que possui o atributo order
     private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
@@ -91,7 +90,7 @@ public class Order implements Serializable {
 
     public Set<OrderItem> getItems() {
         return items;
-    }
+    } // Retorna os orderItens associados a um pedido
 
     @Override
     public int hashCode() {

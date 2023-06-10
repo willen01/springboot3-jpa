@@ -13,9 +13,10 @@ import jakarta.persistence.Table;
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
+
     // Ao criar clase auxiliar que possui como atributo um id composto, é necessário
     // criar uma instância
-    @EmbeddedId
+    @EmbeddedId // Composição
     private OrderItemPk id = new OrderItemPk();
 
     private Integer quantity;
@@ -26,13 +27,13 @@ public class OrderItem implements Serializable {
 
     public OrderItem(Order order, Product product, Integer quantity, Double price) {
         super();
-        id.setProduct(product);
         id.setOrder(order);
+        id.setProduct(product);
         this.quantity = quantity;
         this.price = price;
     }
 
-    @JsonIgnore
+    @JsonIgnore // Quebra de associação de mão dupla
     public Order getOrder() {
         return id.getOrder();
     }

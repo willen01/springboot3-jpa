@@ -31,8 +31,7 @@ public class User implements Serializable {
     // carregado os objetos muitos associados ao objeto um, a não ser que isso seja
     // definido o JsonIgnore - lazy load
     @JsonIgnore
-    @OneToMany(mappedBy = "client")
-
+    @OneToMany(mappedBy = "client") // Mapeia o atributo client
     private List<Order> orders = new ArrayList<>();
 
     public User() {
