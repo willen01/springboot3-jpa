@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.edweb.course.entities.User;
 import com.edweb.course.repositories.UserRepository;
+import com.edweb.course.services.exceptions.ResourceNotFoundException;
 
 // Camadas de regras de negócio
 @Service // registra classe como componente spring para poder ser injetado pelo autowied.
@@ -23,7 +24,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get(); // Retorna objeto user que está dentro do optional
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User obj) {
