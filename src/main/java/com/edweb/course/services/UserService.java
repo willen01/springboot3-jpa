@@ -13,6 +13,8 @@ import com.edweb.course.repositories.UserRepository;
 import com.edweb.course.services.exceptions.DatabaseException;
 import com.edweb.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 // Camadas de regras de negócio
 @Service // registra classe como componente spring para poder ser injetado pelo autowied.
          // Poderia ser @Component também
@@ -45,9 +47,13 @@ public class UserService {
     }
 
     public User update(Long id, User obj) {
-        User entity = repository.getReferenceById(id); // Não vai no banco, apenas monitora o objeto
-        updateData(entity, obj); // atualiza entity com o que chega no obj
-        return repository.save(entity);
+        try {
+            User entity = repository.getReferenceById(id); // Não vai no banco, apenas monitora o objeto
+            updateData(entity, obj); // atualiza entity com o que chega no obj
+            return repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User obj) {
